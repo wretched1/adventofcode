@@ -19,9 +19,10 @@ def split_pos(pos):
 def switch(action, start, stop):
 	start = split_pos(start)
 	stop = split_pos(stop)
-	for i in range(start[0], stop[0]):
-		for x in range(start[1], stop[1]):
+	for i in range(start[0], stop[0]+1):
+		for x in range(start[1], stop[1]+1):
 			position = "%s,%s" %(str(i),str(x))
+			#print "Working on Position: %s" %position #Used for troubleshooting
 			if action == 'toggle':
 				if grid[position] == 0:
 					grid[position] = 1
@@ -36,7 +37,7 @@ def switch(action, start, stop):
 for line in puzzle:
 	line_parts = line.split(' ')
 	start = line_parts[-3]
-	stop = line_parts[-1]
+	stop = line_parts[-1].strip()
 	if re.match(r'^toggle', line_parts[0]):
 		switch('toggle', start, stop)
 	elif re.match(r'^turn on', line):
@@ -45,6 +46,7 @@ for line in puzzle:
 		switch('off', start, stop)
 		
 puzzle.close()
+# Count 'em up
 light_count = 0
 for key in grid:
 	if grid[key] == 1:
